@@ -16,6 +16,11 @@
 
     <section class="py-3 position-relative bg-white">
         <div class="container pb-3">
+            @if (session()->has('success'))
+                <div class="my-4 p-3 alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link text-theme-2 active" id="profile-tab" data-bs-toggle="tab"
@@ -29,6 +34,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link text-theme-2" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
                         type="button" role="tab" aria-controls="home" aria-selected="false">Edit Profile</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a href="logout" class="nav-link text-theme-2">Logout</a>
                 </li>
             </ul>
             <div class="tab-content my-5" id="myTabContent">
@@ -89,51 +97,33 @@
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div
-                                class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                <div class="col p-4 d-flex flex-column ">
-                                    <strong class="d-inline-block mb-2 text-primary">12 Feb, 2023</strong>
-                                    <h3 class="mb-0">Ambulance VF34</h3>
-                                    <div class="text-muted">Hospital name</div>
-                                    <small class="small">#3000</small>
-                                </div>
-                                <div class="col-auto my-auto d-none d-lg-block">
-                                    <img src="{{ asset('assets/images/amb2.jpg') }}" class="img-fluid" width="200"
-                                        height="150">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div
-                                class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                <div class="col p-4 d-flex flex-column ">
-                                    <strong class="d-inline-block mb-2 text-primary">12 Feb, 2023</strong>
-                                    <h3 class="mb-0">Ambulance VF34</h3>
-                                    <div class="text-muted">Hospital name</div>
-                                    <small class="small">#3000</small>
-                                </div>
-                                <div class="col-auto my-auto d-none d-lg-block">
-                                    <img src="{{ asset('assets/images/amb6.jpg') }}" class="img-fluid" width="200"
-                                        height="150">
+                        @forelse (auth()->user()->bookings as $amb)
+                            <div class="col-md-6">
+                                <div
+                                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                    <div class="col p-4 d-flex flex-column ">
+                                        <strong
+                                            class="d-inline-block mb-2 text-primary">{{ \Carbon\Carbon::parse($amb->create_at)->format('d M, Y') }}</strong>
+                                        <h3 class="mb-0">{{ $amb->ambulance->name }}</h3>
+                                        <div class="text-theme">{{ $amb->ambulance->hospital->name }}</div>
+                                        <small class="small">₦{{ number_format($amb->ambulance->price) }}</small>
+                                        
+                                        <h6 class="mt-3">{{ $amb->long }}</h6>
+                                        <h6>{{ $amb->lat }}</h6>
+                                        <h6><b>Incident</b>: {{$amb->incident}}</h6>
+                                        <h6><b>Location</b>: {{$amb->location}}</h6>
+                                    </div>
+                                    <div class="col-auto my-auto d-none d-lg-block">
+                                        <img src="{{ asset('assets/images/' . $amb->ambulance->image) }}" class="img-fluid"
+                                            width="200" height="150">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div
-                                class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                <div class="col p-4 d-flex flex-column ">
-                                    <strong class="d-inline-block mb-2 text-primary">12 Feb, 2023</strong>
-                                    <h3 class="mb-0">Ambulance VF34</h3>
-                                    <div class="text-muted">Hospital name</div>
-                                    <small class="small">#3000</small>
-                                </div>
-                                <div class="col-auto my-auto d-none d-lg-block">
-                                    <img src="{{ asset('assets/images/amb7.jpg') }}" class="img-fluid" width="200"
-                                        height="150">
-                                </div>
+                        @empty
+                            <div class="my-4 p-3 alert alert-info">
+                                You have not booked any ambulance. <a href="{{ route('ambualance.list') }}"> Book Now</a>.
                             </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
                 <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">

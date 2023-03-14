@@ -34,7 +34,7 @@
                         <a class="nav-link" href="{{ route('ambualance.list') }}">List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#how">How it works</a>
+                        <a class="nav-link" href="{{ route('home') }}/#how">How it works</a>
                     </li>
                 </ul>
 

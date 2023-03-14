@@ -104,6 +104,7 @@
         </div>
     </section>
 
+    {{-- List --}}
     <section class="py-5">
         <div class="container pt-5 pb-3">
             <h1 class="display-5 fw-800 lh-3 mt-5 pb-2">
@@ -145,7 +146,8 @@
         </div>
     </section>
 
-    <section class="bg-white">
+    {{-- How it works --}}
+    <section class="bg-white" id="how">
         <div class="container py-5">
 
             <h1 class="display-5 fw-800 lh-3 mt-5 pb-3">

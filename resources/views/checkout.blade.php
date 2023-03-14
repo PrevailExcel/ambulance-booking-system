@@ -17,6 +17,12 @@
 
     <section class="py-3 position-relative bg-white">
         <div class="container pb-3">
+
+            @if (session()->has('failed'))
+                <div class="my-4 p-3 alert alert-success">
+                    {{ session()->get('failed') }}
+                </div>
+            @endif
             <main>
                 <div class="py-5">
                 </div>
@@ -24,18 +30,25 @@
                 <div class="row g-5">
                     <div class="col-md-5 col-lg-4 order-md-last">
                         <div class="position-sticky" style="top: 2rem;">
-                            <div class="d-flex justify-content-between mb-3">
-                                <span>Have an account already? For faster checkout:</span>
-                                <button class="btn btn-primary bg-theme-2 border-0" type="submit">Login</button>
-                            </div>
-                            <hr>
+                            @if (!auth()->user() || auth()->user()->type != 1)
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span>Have an account already? For faster checkout:</span>
+                                    <form method="POST" action="{{ route('login.to.checkout') }}">
+                                        @csrf
+                                        <input type="hidden" value="{{ $ambulance->id }}" name="ambulance">
+                                        <button class="btn btn-primary bg-theme-2 border-0" type="submit">Login</button>
+                                    </form>
+                                </div>
+                                <hr>
+                            @endif
                             <h4 class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="text-theme-2">Your ambulance</span>
                                 <span class="badge bg-theme-2 rounded-pill">1</span>
                             </h4>
                             <ul class="list-group my-3">
                                 <li class="list-group-item d-flex justify-content-between lh-sm ">
-                                    <img class="img-fluid rounded" height="70" style="max-height: 70px; max-width: 90px;" src="{{asset('assets/images/'.$ambulance->image)}}" />
+                                    <img class="img-fluid rounded" height="70" style="max-height: 70px; max-width: 90px;"
+                                        src="{{ asset('assets/images/' . $ambulance->image) }}" />
                                     <div>
                                         <h6 class="my-0 fw-bold">{{ $ambulance->name }}</h6>
                                         <small class="text-theme">{{ $ambulance->hospital->name }}</small><br>
@@ -53,119 +66,154 @@
                         </div>
                     </div>
                     <div class="col-md-7 col-lg-8">
-                        <h4 class="mb-3">Billing address</h4>
-                        <form class="needs-validation" novalidate>
+                        <h4 class="mb-3">
+                            @if (!auth()->user() || auth()->user()->type != 1)
+                                Billing details
+                            @else
+                                {{ auth()->user()->name }}
+                            @endif
+                        </h4>
+                        <form class="needs-validation" novalidate method="POST" action="{{ route('book') }}">
+                            @csrf
+
                             <div class="row g-3">
+                                @if (!auth()->user() || auth()->user()->type != 1)
+                                    <div class="col-sm-6">
+                                        <label for="firstName" class="form-label">Full name</label>
+                                        <input type="text" name="name" class="form-control" id="firstName"
+                                            placeholder="Your full name" value="" required>
+                                        <div class="invalid-feedback">
+                                            Valid name is required.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" name="phone" class="form-control" id="phone"
+                                            placeholder="08012345678" required>
+                                        <div class="invalid-feedback">
+                                            Valid phone number required.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email"
+                                            placeholder="youremail@example.com" required>
+                                        <div class="invalid-feedback">
+                                            Valid email required.
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div class="col-sm-6">
-                                    <label for="firstName" class="form-label">First name</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="" value=""
-                                        required>
+                                    <label for="incident" class="form-label">Incident</label>
+                                    <input type="text" name="incident" class="form-control" list="datalistOptions"
+                                        id="incident" placeholder="Type to search...">
+                                    <datalist id="datalistOptions">
+                                        <option value="Accident">
+                                        <option value="Maternity">
+                                        <option value="Death">
+                                        <option value="Fire">
+                                        <option value="Crime scene">
+                                    </datalist>
                                     <div class="invalid-feedback">
-                                        Valid first name is required.
+                                        Valid Incident required.
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6">
-                                    <label for="lastName" class="form-label">Last name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="" value=""
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Valid last name is required.
-                                    </div>
-                                </div>
+                                @if (!auth()->user() || auth()->user()->type != 1)
+                                    <div class="col-12">
+                                    @else
+                                        <div class="col-sm-6">
+                                @endif
 
-                                <div class="col-sm-6">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email"
-                                        placeholder="youremail@example.com" required>
-                                    <div class="invalid-feedback">
-                                        Valid email required.
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone"
-                                        placeholder="08012345678" required>
-                                    <div class="invalid-feedback">
-                                        Valid phone number required.
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="address" class="form-label">Current Location</label>
-                                    <input type="text" class="form-control" id="address" placeholder="1234 Main St"
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Please enter your current location address.
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="long" class="form-label">Longtitude</label>
-                                    <input type="text" class="form-control" id="long" readonly required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="lat" class="form-label">Latitude</label>
-                                    <input type="text" class="form-control" id="lat" readonly required>
-                                </div>
-
-                            </div>
-
-                            <hr class="my-4">
-
-                            <h4 class="mb-3">Payment 
-                                <i class="fa fa-cc-mastercard text-theme-2 fs-3 me-2"></i>
-                                <i class="fa fa-cc-visa text-theme-2 fs-3 me-2"></i>
-                                <i class="fa fa-cc-amex text-theme-2 fs-3 me-2"></i>
-                                <i class="fa fa-cc-paypal text-theme-2 fs-3"></i></h4>
-
-                            <div class="row gy-3">
-                                <div class="col-md-6">
-                                    <label for="cc-name" class="form-label">Name on card</label>
-                                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                                    <small class="text-muted">Full name as displayed on card</small>
-                                    <div class="invalid-feedback">
-                                        Name on card is required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="cstCCNumber" class="form-label">Credit card number</label>
-                                    <input type="text" class="form-control" name="cstCCNumber" id="cstCCNumber"
-                                        value=""onkeyup="cc_format('cstCCNumber','cstCCardType');" placeholder=""
-                                        required>
-                                    <div class="invalid-feedback">
-                                        Credit card number is required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label for="cc-expiration" class="form-label">Expiration</label>
-                                    <input type="text" class="form-control" id="cc-expiration" maxlength='5'
-                                        onkeyup="formatString(event);" placeholder="mm/yy" required>
-                                    <div class="invalid-feedback">
-                                        Expiration date required
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label for="cc-cvv" class="form-label">CVV</label>
-                                    <input type="text" class="form-control" id="cc-cvv" maxlength="3"
-                                        minlength="3" placeholder="123" required>
-                                    <div class="invalid-feedback">
-                                        Security code required
-                                    </div>
+                                <label for="address" class="form-label">Current Location</label>
+                                <input type="text" name="location" class="form-control" id="address"
+                                    placeholder="1234 Main St" required>
+                                <div class="invalid-feedback">
+                                    Please enter your current location address.
                                 </div>
                             </div>
 
-                            <hr class="my-4">
+                            <div class="col-md-6">
+                                <label for="long" class="form-label">Longtitude</label>
+                                <input type="text" class="form-control" id="long" name="long" readonly
+                                    required>
+                                @error('long')
+                                    <div class="error text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                            <button class="w-100 btn btn-primary bg-theme-2 border-0 btn-lg" type="submit">Continue to
-                                checkout</button>
-                        </form>
+                            <div class="col-md-6">
+                                <label for="lat" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" name="lat" id="lat" readonly
+                                    required>
+                                @error('lat')
+                                    <div class="error text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            <input type="hidden" name="ambulance" value="{{ $ambulance->id }}">
                     </div>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3">Payment
+                        <i class="fa fa-cc-mastercard text-theme-2 fs-3 me-2"></i>
+                        <i class="fa fa-cc-visa text-theme-2 fs-3 me-2"></i>
+                        <i class="fa fa-cc-amex text-theme-2 fs-3 me-2"></i>
+                        <i class="fa fa-cc-paypal text-theme-2 fs-3"></i>
+                    </h4>
+
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="cc-name" class="form-label">Name on card</label>
+                            <input type="text" class="form-control" name="ccname" id="cc-name" placeholder=""
+                                required>
+                            <small class="text-muted">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="cstCCNumber" class="form-label">Credit card number</label>
+                            <input type="text" class="form-control" name="cstCCNumber" id="cstCCNumber"
+                                value=""onkeyup="cc_format('cstCCNumber','cstCCardType');" placeholder="" required>
+                            <div class="invalid-feedback">
+                                Credit card number is required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-expiration" class="form-label">Expiration</label>
+                            <input type="text" class="form-control" name="ccexp" id="cc-expiration" maxlength='5'
+                                onkeyup="formatString(event);" placeholder="mm/yy" required>
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="cc-cvv" class="form-label">CVV</label>
+                            <input type="tel" class="form-control" id="cc-cvv" name="cccvv" maxlength="3"
+                                minlength="3" placeholder="123" required>
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary bg-theme-2 border-0 btn-lg" type="submit">Continue to
+                        checkout</button>
+                    </form>
                 </div>
-            </main>
+        </div>
+        </main>
         </div>
     </section>
 @endsection
