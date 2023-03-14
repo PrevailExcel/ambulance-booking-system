@@ -24,4 +24,11 @@ class AuthController extends Controller
         }
         return redirect()->back()->with('alert', 'Username and Password Not Matched');
     }
+
+    public function logout()
+    {
+         Auth::logout();
+         session()->regenerate();
+         return redirect()->route('login');
+    }
 }
