@@ -30,8 +30,14 @@
                                         src="{{ asset('assets/images/' . $amb->image) }}">
                                 </a>
                                 <ul class="social">
-                                    <li class="shadow"><a href="" data-tip="Quick View"><i
-                                                class="fa fa-search"></i></a></li>
+                                    <li class="shadow"><a href="" data-tip="Quick View">
+                                        @if ($amb->booked)
+                                        <i class="fa fa-lock"></i>
+                                        @else
+                                        <i class="fa fa-unlock"></i>
+                                        @endif
+                                            
+                                            </a></li>
                                     <li class="shadow"><a href="" data-tip="Add to Wishlist"><i
                                                 class="fa fa-shopping-bag"></i></a></li>
                                     <li class="shadow"><a href="" data-tip="Add to Cart"><i

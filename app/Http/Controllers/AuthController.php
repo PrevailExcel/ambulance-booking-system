@@ -12,6 +12,11 @@ class AuthController extends Controller
         return view('login');
     }
 
+    public function showRegister()
+    {
+        return view('register');
+    }
+
     public function authenticate(Request $request)
     {
         $this->validate($request, [

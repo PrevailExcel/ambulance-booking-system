@@ -26,7 +26,7 @@
             <div class="col-md-8 col-sm-12 bg-dark bg-theme-2">
                 <div class="text-white ps-5mt-3 mt-md-5">
                     <h2>Login to your dashboard to book an ambulance</h2>
-                    <p class="text-theme">Go Back.</p>
+                    <p><a href="/" class="text-theme">Go Back.</a></p>
                 </div>
             </div>
             <div class="col-md-4 col-sm-12">
@@ -51,7 +51,7 @@
 
                     <div class="clearfix"></div>
                     <div class="py-5 px-3 text-muted">
-                        If you do not have an account, <a class="link-dark">register</a>.<br>
+                        If you do not have an account, <a class="link-dark" href="{{route('register')}}">register</a>.<br>
                         <a class="text-theme-2">Forgot password?</a>
                     </div>
 

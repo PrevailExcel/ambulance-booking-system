@@ -3,6 +3,7 @@
     Home
 @endsection
 @section('body')
+    {{-- Hero --}}
     <section>
         <div class="container col-xxl-8 px-4 py-5 position-relative">
             <div class="row flex-lg-row-reverse align-items-center g-5 py-5 text-white">
@@ -36,6 +37,7 @@
         </div>
     </section>
 
+    {{-- About --}}
     <section class="bg-white">
         <div class="container mt-5 py-5">
             <div class="row py-5">
@@ -79,6 +81,7 @@
         </div>
     </section>
 
+    {{-- Count --}}
     <section class="bg-theme">
         <div class="container-fluid text-center p-5">
             <div class="row">
@@ -122,8 +125,13 @@
                                         src="{{ asset('assets/images/' . $amb->image) }}">
                                 </a>
                                 <ul class="social">
-                                    <li class="shadow"><a href="" data-tip="Quick View"><i
-                                                class="fa fa-search"></i></a></li>
+                                    <li class="shadow"><a href="" data-tip="Quick View">
+                                            @if ($amb->booked)
+                                                <i class="fa fa-lock"></i>
+                                            @else
+                                                <i class="fa fa-unlock"></i>
+                                            @endif
+                                        </a></li>
                                     <li class="shadow"><a href="" data-tip="Add to Wishlist"><i
                                                 class="fa fa-shopping-bag"></i></a></li>
                                     <li class="shadow"><a href="" data-tip="Add to Cart"><i

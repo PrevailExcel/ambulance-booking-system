@@ -23,6 +23,7 @@ Route::get('/ambulances/{ambulance}', [FrontController::class, 'ambulanceDetails
 Route::get('/checkout/{ambulance}', [FrontController::class, 'checkout'])->name('checkout');
 Route::post('/book', [BookingController::class, 'book'])->name('book');
 Route::get('login', [AuthController::class, 'show'])->name('login');
+Route::get('register', [AuthController::class, 'showRegister'])->name('register');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('login', [AuthController::class, 'authenticate']);
 
