@@ -13,19 +13,34 @@ class AdminController extends Controller
 {
     public function show()
     {
-        $users = User::whereType(1)->latest()->take(5)->get();
-        $bookings = Booking::latest()->take(5)->get();
-        $profit = 0;
-        foreach (Booking::all() as $book) {
-            $profit += $book->ambulance->price;
-        }
+        if (auth()->user()->type == 0) {
+            $users = User::whereType(1)->latest()->take(5)->get();
+            $bookings = Booking::latest()->take(5)->get();
+            $profit = 0;
+            foreach (Booking::all() as $book) {
+                $profit += $book->ambulance->price;
+            }
 
-        $stats = [
-            'users' => User::whereType(1)->count(),
-            'ambs' => Ambulance::count(),
-            'profit' => $profit
-        ];
-        return view('dashboard.main', compact('users', 'stats', 'bookings'));
+            $stats = [
+                'users' => User::whereType(1)->count(),
+                'ambs' => Ambulance::count(),
+                'profit' => $profit
+            ];
+            return view('dashboard.main', compact('users', 'stats', 'bookings'));
+        } else {
+
+            $bookings = Booking::whereAmbulanceId(auth()->user()->hospital_id)->latest()->take(5)->get();
+            $profit = 0;
+            foreach (Booking::all() as $book) {
+                $profit += $book->ambulance->price;
+            }
+
+            $stats = [
+                'ambs' => Ambulance::count(),
+                'profit' => $profit
+            ];
+            return view('hospital.main', compact('stats', 'bookings'));
+        }
     }
 
     public function hospitals()
@@ -42,14 +57,29 @@ class AdminController extends Controller
 
     public function ambulances()
     {
-        $ambulances = Ambulance::all();
-        return view('dashboard.ambulances', compact('ambulances'));
+        if (auth()->user()->type == 0) {
+            $ambulances = Ambulance::all();
+            return view('dashboard.ambulances', compact('ambulances'));
+        } else {
+            $ambulances = auth()->user()->hospital->ambulances;
+            return view('hospital.ambulances', compact('ambulances'));
+        }
     }
 
     public function bookings()
     {
-        $bookings = Booking::all();
-        return view('dashboard.bookings', compact('bookings'));
+        if (auth()->user()->type == 0) {
+            $bookings = Booking::all();
+            return view('dashboard.bookings', compact('bookings'));
+        } else {
+            $bookings = [];
+            foreach (auth()->user()->hospital->ambulances as $amb) {
+                array_push($bookings, $amb->bookings);
+            }
+
+            $bookings = Booking::all();
+            return view('dashboard.bookings', compact('bookings'));
+        }
     }
 
     public function profile()

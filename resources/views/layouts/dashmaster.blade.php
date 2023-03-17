@@ -32,7 +32,7 @@
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="{{route('logout')}}">Sign out</a>
+                <a class="nav-link px-3" href="{{ route('logout') }}">Sign out</a>
             </div>
         </div>
     </header>
@@ -49,20 +49,22 @@
                                 Dashboard
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('dashboard/hospitals*') ? 'active' : '' }}"
-                                href="{{ route('hospitals') }}">
-                                <span class="fa fa-hospital-o"></span>
-                                Hospitals
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('dashboard/users*') ? 'active' : '' }}"
-                                href="{{ route('users') }}">
-                                <span class="fa fa-users"></span>
-                                Users
-                            </a>
-                        </li>
+                        @if (auth()->user()->type == 0)
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->is('dashboard/hospitals*') ? 'active' : '' }}"
+                                    href="{{ route('hospitals') }}">
+                                    <span class="fa fa-hospital-o"></span>
+                                    Hospitals
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->is('dashboard/users*') ? 'active' : '' }}"
+                                    href="{{ route('users') }}">
+                                    <span class="fa fa-users"></span>
+                                    Users
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('dashboard/ambulances*') ? 'active' : '' }}"
                                 href="{{ route('ambulances') }}">
@@ -93,11 +95,23 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('logout')}}">
+                            <a class="nav-link" href="{{ route('logout') }}">
                                 <span class="fa fa-sign-out"></span>
                                 Logout
                             </a>
                         </li>
+
+
+                        @if (auth()->user()->type == 2)
+                            <li class="nav-item mt-3">
+                                <hr class="my-2">
+                                <a class="nav-link" href="javascript:void(0)">
+                                    <b>
+                                        {{ auth()->user()->hospital->name }}
+                                    </b>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </nav>
