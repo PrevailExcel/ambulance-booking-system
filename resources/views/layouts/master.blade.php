@@ -40,7 +40,12 @@
 
                 <form class="d-flex">
                     <a href="{{ route('dashboard') }}"><button class="btn bg-theme btn-dark border-0 px-5"
-                            type="button">Book Now</button></a>
+                            type="button">@auth
+                                Dashboard
+                            @else
+                                Get Started
+                            @endauth
+                        </button></a>
                 </form>
             </div>
         </div>

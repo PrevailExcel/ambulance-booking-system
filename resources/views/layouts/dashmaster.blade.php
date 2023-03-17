@@ -86,7 +86,8 @@
                             </a>
                         </h6>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {{ request()->is('dashboard/profile') ? 'active' : '' }}"
+                                href="{{ route('dash.profile') }}">
                                 <span class="fa fa-cogs"></span>
                                 Profile
                             </a>

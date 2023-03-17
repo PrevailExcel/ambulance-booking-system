@@ -51,4 +51,9 @@ class AdminController extends Controller
         $bookings = Booking::all();
         return view('dashboard.bookings', compact('bookings'));
     }
+
+    public function profile()
+    {
+        return view('dashboard.profile');
+    }
 }

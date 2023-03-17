@@ -39,4 +39,5 @@ Route::middleware(['auth', 'admins'])->group(function () {
     Route::get('/dashboard/users',  [AdminController::class, 'users'])->name('users');
     Route::get('/dashboard/ambulances',  [AdminController::class, 'ambulances'])->name('ambulances');
     Route::get('/dashboard/bookings',  [AdminController::class, 'bookings'])->name('bookings');
+    Route::get('/dashboard/profile',  [AdminController::class, 'profile'])->name('dash.profile');
 });
