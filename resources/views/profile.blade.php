@@ -58,7 +58,6 @@
                             {{ auth()->user()->name }}
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-sm-3 col-md-2 col-5">
                             <label style="font-weight:bold;">Phone number</label>
