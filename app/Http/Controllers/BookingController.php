@@ -12,7 +12,7 @@ class BookingController extends Controller
 {
     public function book(Request $request)
     {
-        
+
         $this->validate($request, [
             'long' => 'required',
             'lat' => 'required',
@@ -20,7 +20,7 @@ class BookingController extends Controller
         ]);
 
         // If user is not logged in, create a new user and log him in
-        if (Auth::user()->type != 1) {
+        if (!auth()->user() || auth()->user()->type != 1) {
 
             $this->validate($request, [
                 'email'   => 'required|unique:users,email',
@@ -35,7 +35,9 @@ class BookingController extends Controller
                 'phone' => $request->phone,
                 'password' => Hash::make($request->phone), // use phone number for default password
             ]);
-            Auth::login($user);
+            if ($user) {
+                Auth::login($user);
+            }
         }
 
         // Book User an ambulance

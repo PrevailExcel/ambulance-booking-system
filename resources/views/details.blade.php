@@ -56,9 +56,15 @@
                             <h4 class="price">current price: <span>₦{{ number_format($ambulance->price) }}</span></h4>
 
                             <div class="action">
-                                <a href="{{ route('checkout', $ambulance->id) }}"><button class="add-to-cart btn btn-default px-4"
-                                        @if ($ambulance->booked) disabled @endif
-                                        type="button">Chechout</button></a>
+                                <a @if ($ambulance->booked) href="javascript:void(0)" @else href="{{ route('checkout', $ambulance->id) }}" @endif><button
+                                        class="add-to-cart btn btn-default px-4"
+                                        @if ($ambulance->booked) disabled @endif type="button">
+                                        @if ($ambulance->booked)
+                                            Not Available
+                                        @else
+                                            Chechout
+                                        @endif
+                                    </button></a>
                             </div>
                         </div>
                     </div>

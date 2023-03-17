@@ -139,7 +139,12 @@
                                 </ul>
                                 <a href="{{ route('ambualance.details', $amb->id) }}" class="select-options shadow"><i
                                         class="fa fa-arrow-right"></i>
-                                    Book Now</a>
+                                    @if ($amb->booked)
+                                        Not Available
+                                    @else
+                                        Book Now
+                                    @endif
+                                </a>
                             </div>
                             <div class="product-content">
                                 <h3 class="title"><a

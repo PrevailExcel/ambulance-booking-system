@@ -18,11 +18,12 @@
     <section class="py-3 position-relative bg-white">
         <div class="container pb-3">
 
-            @if (session()->has('failed'))
-                <div class="my-4 p-3 alert alert-success">
-                    {{ session()->get('failed') }}
+            @error('email')
+                <div class="my-4 p-3 alert alert-danger">
+                    {{ $message }}
                 </div>
-            @endif
+            @enderror
+            
             <main>
                 <div class="py-5">
                 </div>
@@ -81,7 +82,7 @@
                                     <div class="col-sm-6">
                                         <label for="firstName" class="form-label">Full name</label>
                                         <input type="text" name="name" class="form-control" id="firstName"
-                                            placeholder="Your full name" value="" required>
+                                            placeholder="Your full name" value="{{ old('name') }}" required>
                                         <div class="invalid-feedback">
                                             Valid name is required.
                                         </div>
@@ -90,7 +91,7 @@
                                     <div class="col-sm-6">
                                         <label for="phone" class="form-label">Phone Number</label>
                                         <input type="tel" name="phone" class="form-control" id="phone"
-                                            placeholder="08012345678" required>
+                                            placeholder="08012345678" value="{{ old('phone') }}" required>
                                         <div class="invalid-feedback">
                                             Valid phone number required.
                                         </div>
@@ -99,7 +100,10 @@
                                     <div class="col-sm-6">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" name="email" class="form-control" id="email"
-                                            placeholder="youremail@example.com" required>
+                                            placeholder="youremail@example.com" value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <div class="error text-danger">{{ $message }}</div>
+                                        @enderror
                                         <div class="invalid-feedback">
                                             Valid email required.
                                         </div>
@@ -109,7 +113,7 @@
                                 <div class="col-sm-6">
                                     <label for="incident" class="form-label">Incident</label>
                                     <input type="text" name="incident" class="form-control" list="datalistOptions"
-                                        id="incident" placeholder="Type to search...">
+                                        id="incident" value="{{ old('incident') }}" placeholder="Type to search...">
                                     <datalist id="datalistOptions">
                                         <option value="Accident">
                                         <option value="Maternity">
@@ -130,7 +134,7 @@
 
                                 <label for="address" class="form-label">Current Location</label>
                                 <input type="text" name="location" class="form-control" id="address"
-                                    placeholder="1234 Main St" required>
+                                    placeholder="1234 Main St" value="{{ old('location') }}" required>
                                 <div class="invalid-feedback">
                                     Please enter your current location address.
                                 </div>
@@ -138,8 +142,8 @@
 
                             <div class="col-md-6">
                                 <label for="long" class="form-label">Longtitude</label>
-                                <input type="text" class="form-control" id="long" name="long" readonly
-                                    required>
+                                <input type="text" class="form-control" id="long" name="long"
+                                    value="{{ old('long') }}" readonly required>
                                 @error('long')
                                     <div class="error text-danger">{{ $message }}</div>
                                 @enderror
@@ -147,8 +151,8 @@
 
                             <div class="col-md-6">
                                 <label for="lat" class="form-label">Latitude</label>
-                                <input type="text" class="form-control" name="lat" id="lat" readonly
-                                    required>
+                                <input type="text" class="form-control" name="lat" id="lat"
+                                    value="{{ old('lat') }}" readonly required>
                                 @error('lat')
                                     <div class="error text-danger">{{ $message }}</div>
                                 @enderror
@@ -170,8 +174,8 @@
                     <div class="row gy-3">
                         <div class="col-md-6">
                             <label for="cc-name" class="form-label">Name on card</label>
-                            <input type="text" class="form-control" name="ccname" id="cc-name" placeholder=""
-                                required>
+                            <input type="text" class="form-control" value="{{ old('ccname') }}" name="ccname"
+                                id="cc-name" placeholder="" required>
                             <small class="text-muted">Full name as displayed on card</small>
                             <div class="invalid-feedback">
                                 Name on card is required
@@ -180,7 +184,8 @@
 
                         <div class="col-md-6">
                             <label for="cstCCNumber" class="form-label">Credit card number</label>
-                            <input type="text" class="form-control" name="cstCCNumber" id="cstCCNumber"
+                            <input type="text" class="form-control" value="{{ old('cstCCNumber') }}"
+                                name="cstCCNumber" id="cstCCNumber"
                                 value=""onkeyup="cc_format('cstCCNumber','cstCCardType');" placeholder="" required>
                             <div class="invalid-feedback">
                                 Credit card number is required
@@ -190,7 +195,7 @@
                         <div class="col-md-3">
                             <label for="cc-expiration" class="form-label">Expiration</label>
                             <input type="text" class="form-control" name="ccexp" id="cc-expiration" maxlength='5'
-                                onkeyup="formatString(event);" placeholder="mm/yy" required>
+                                onkeyup="formatString(event);" value="{{ old('ccexp') }}" placeholder="mm/yy" required>
                             <div class="invalid-feedback">
                                 Expiration date required
                             </div>
