@@ -32,7 +32,7 @@
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <a class="nav-link px-3" href="#">Sign out</a>
+                <a class="nav-link px-3" href="{{route('logout')}}">Sign out</a>
             </div>
         </div>
     </header>
@@ -71,7 +71,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {{ request()->is('dashboard/bookings') ? 'active' : '' }}"
+                                href="{{ route('bookings') }}">
                                 <span class="fa fa-cubes"></span>
                                 Bookings
                             </a>
@@ -91,9 +92,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span class="fa fa-bar-chart-o"></span>
-                                Reports
+                            <a class="nav-link" href="{{route('logout')}}">
+                                <span class="fa fa-sign-out"></span>
+                                Logout
                             </a>
                         </li>
                     </ul>

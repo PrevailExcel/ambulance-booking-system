@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ambulance;
 use App\Models\Booking;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -51,6 +52,10 @@ class BookingController extends Controller
         ]);
 
         if ($book) {
+            $amb = Ambulance::find($book->ambulance_id);
+            $amb->booked = true;
+            $amb->update();
+
             return redirect()->route('profile')->with('success', 'You have successfully booked an ambulance.');
         } else {
             return redirect()->back()->with('failed', 'There\'s an issue, please try again');

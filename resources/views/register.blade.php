@@ -35,21 +35,21 @@
                         @csrf
                         <div class="form-group mb-4">
                             <label>Name</label>
-                            <input type="text" class="form-control" name="name" placeholder="Full Name" required>                            
+                            <input type="text" class="form-control" name="name" value="{{old('name')}}" placeholder="Full Name" required>                            
                             @error('name')
                             <div class="error text-danger">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="form-group mb-4">
                             <label>Phone Number</label>
-                            <input type="tel" class="form-control" name="phone" placeholder="Email" required>
+                            <input type="tel" class="form-control" value="{{old('phone')}}" name="phone" placeholder="08123456789" required>
                             @error('phone')
                             <div class="error text-danger">{{ $message }}</div>
                         @enderror
                         </div>
                         <div class="form-group mb-4">
                             <label>Email</label>
-                            <input type="email" class="form-control" name="email" placeholder="08012345678" required>
+                            <input type="email" class="form-control" name="email" value="{{old('email')}}" placeholder="youremail@example.com" required>
                             @error('email')
                                 <div class="error text-danger">{{ $message }}</div>
                             @enderror

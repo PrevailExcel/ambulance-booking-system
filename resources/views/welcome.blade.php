@@ -155,7 +155,10 @@
                         </div>
                     </div>
                 @endforeach
+
             </div>
+            <button class="center tex-center btn btn-dark bg-theme border-0 px-4">View All</button>
+
         </div>
     </section>
 

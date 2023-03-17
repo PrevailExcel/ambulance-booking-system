@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -30,10 +32,31 @@ class AuthController extends Controller
         return redirect()->back()->with('alert', 'Username and Password Not Matched');
     }
 
+    public function createUser(Request $request)
+    {
+        $this->validate($request, [
+            'email'   => 'required|unique:users,email',
+            'name' => 'required',
+            'phone' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+        ]);
+        if ($user) {
+            Auth::login($user);
+        }
+        return redirect()->intended('/dashboard');
+    }
+
     public function logout()
     {
-         Auth::logout();
-         session()->regenerate();
-         return redirect()->route('login');
+        Auth::logout();
+        session()->regenerate();
+        return redirect()->route('login');
     }
 }

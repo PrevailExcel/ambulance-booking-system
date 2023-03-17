@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Hospitals</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
-                <button type="button" class="btn bg-theme text-white me-2"><i class="fa fa-plus"> </i> New</button>
+            <button type="button" class="btn bg-theme text-white me-2"><i class="fa fa-plus"> </i> New</button>
         </div>
     </div>
 
@@ -29,13 +29,19 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($hospitals as $hospital)
+                                        @php
+                                            $book = 0;
+                                            foreach ($hospital->ambulances as $amb) {
+                                                $book += $amb->bookings->count();
+                                            }
+                                        @endphp
                                         <tr>
                                             <td>{{ $hospital->name }}</td>
-                                            <td>{{ $hospital->address }} location</td>
+                                            <td>{{ $hospital->address }} </td>
                                             <td>{{ $hospital->user->email }}</td>
                                             <td>{{ $hospital->user->phone }}</td>
                                             <td>{{ $hospital->ambulances->count() }}</td>
-                                            <td>{{ rand(1, 8) }}</td>
+                                            <td>{{ $book }}</td>
                                             <td>
                                                 <a href="javascript:void(0)" id="' + data.id + '" role="button"
                                                     class="ml-1 editPack"><i class="text-success fa fa-eye"> <span

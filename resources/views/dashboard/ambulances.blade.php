@@ -44,7 +44,7 @@
                                                     <span class="px-4 bg-theme text-white rounded">True</span>
                                                 @else
                                                     <span class="px-4 bg-theme-2 text-white rounded">False</span>
-                                                @endif &nbsp;{{ rand(1, 8) }}
+                                                @endif &nbsp;{{ $ambulance->bookings->count() }}
                                             </td>
                                             <td>
                                                 <a href="javascript:void(0)" id="' + data.id + '" role="button"
