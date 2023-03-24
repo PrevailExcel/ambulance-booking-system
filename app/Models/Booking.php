@@ -21,6 +21,10 @@ class Booking extends Model
     public function ambulance(){
         return $this->belongsTo(Ambulance::class);
     }
+
+    public function hospital(){
+        return $this->hasOneThrough(Hospital::class, Ambulance::class);
+    }
     
     public function user(){
         return $this->belongsTo(User::class);

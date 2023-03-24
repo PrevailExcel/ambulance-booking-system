@@ -29,14 +29,14 @@ class AdminController extends Controller
             return view('dashboard.main', compact('users', 'stats', 'bookings'));
         } else {
 
-            $bookings = Booking::whereAmbulanceId(auth()->user()->hospital_id)->latest()->take(5)->get();
+            $bookings = auth()->user()->hospital->bookings;
             $profit = 0;
-            foreach (Booking::all() as $book) {
+            foreach ($bookings as $book) {
                 $profit += $book->ambulance->price;
             }
 
             $stats = [
-                'ambs' => Ambulance::count(),
+                'ambs' => auth()->user()->hospital->ambulances->count(),
                 'profit' => $profit
             ];
             return view('hospital.main', compact('stats', 'bookings'));

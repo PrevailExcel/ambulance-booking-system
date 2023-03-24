@@ -24,7 +24,9 @@ Route::get('/checkout/{ambulance}', [FrontController::class, 'checkout'])->name(
 Route::post('/book', [BookingController::class, 'book'])->name('book');
 Route::get('login', [AuthController::class, 'show'])->name('login')->middleware(['guest']);
 Route::get('register', [AuthController::class, 'showRegister'])->name('register');
+Route::get('register/hospital', [AuthController::class, 'showHospitalRegister'])->name('hospital.register');
 Route::post('register', [AuthController::class, 'createUser']);
+Route::post('register/hospital', [AuthController::class, 'createHospital']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('login', [AuthController::class, 'authenticate']);
 

@@ -14,6 +14,11 @@ class Hospital extends Model
         return $this->hasMany(Ambulance::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasManyThrough(Booking::class, Ambulance::class);
+    }
+
     public function user(){
         return $this->hasOne(User::class);
     }

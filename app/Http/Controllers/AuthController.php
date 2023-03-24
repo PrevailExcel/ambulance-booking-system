@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hospital;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,11 @@ class AuthController extends Controller
     public function showRegister()
     {
         return view('register');
+    }
+
+    public function showHospitalRegister()
+    {
+        return view('register_hospital');
     }
 
     public function authenticate(Request $request)
@@ -45,6 +51,37 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+        ]);
+        if ($user) {
+            Auth::login($user);
+        }
+        return redirect()->intended('/dashboard');
+    }
+
+
+    public function createHospital(Request $request)
+    {
+        $this->validate($request, [
+            'email'   => 'required|unique:users,email',
+            'name' => 'required',
+            'hospital_name' => 'required',
+            'hospital_address' => 'required',
+            'phone' => 'required',
+            'password' => 'required'
+        ]);
+
+        $hospital = new Hospital();
+        $hospital->name = $request->hospital_name;
+        $hospital->address = $request->hospital_address; 
+        $hospital->save();
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'hospital_id' => $hospital->id,
+            'type' => 2,
             'password' => Hash::make($request->password),
         ]);
         if ($user) {

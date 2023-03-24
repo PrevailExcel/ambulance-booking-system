@@ -13,7 +13,6 @@ class BookingController extends Controller
 {
     public function book(Request $request)
     {
-
         $this->validate($request, [
             'long' => 'required',
             'lat' => 'required',

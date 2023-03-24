@@ -36,6 +36,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}/#how">How it works</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('hospital.register') }}">Hospital</a>
+                    </li>
                 </ul>
 
                 <form class="d-flex">
